@@ -1,0 +1,74 @@
+[
+  {
+    "id": "module-1",
+    "identifiers": "12456790",
+    "correctAnswers": "70",
+    "baseColor": "piros",
+    "wireColors": [
+      "piros",
+      "narancs"
+    ],
+    "questionGroups": [
+      {
+        "question": "Ki volt Giuseppe Garibaldi?",
+        "wires": [
+          {
+            "identifier": "1",
+            "label": "Lengyel politikus"
+          },
+          {
+            "identifier": "9",
+            "label": "Olasz feltaláló"
+          },
+          {
+            "identifier": "7",
+            "label": "Olasz forradalmár"
+          },
+          {
+            "identifier": "2",
+            "label": "Orosz kovács"
+          }
+        ]
+      },
+      {
+        "question": "Szicília melyik államhoz tartozott?",
+        "wires": [
+          {
+            "identifier": "6",
+            "label": "Szicília állam"
+          },
+          {
+            "identifier": "5",
+            "label": "Szárd-Habsburg királyság"
+          },
+          {
+            "identifier": "4",
+            "label": "Pápai állam"
+          },
+          {
+            "identifier": "0",
+            "label": "Szicíliai- és Nápolyi királyság"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "module-2",
+    "identifiers": "ABCD",
+    "correctAnswers": "B",
+    "baseColor": "kék",
+    "wireColors": [
+      "kék"
+    ],
+    "questions": [
+      "18… -ban mi történt?"
+    ],
+    "wireLabels": {
+      "A": "A Bécsi kongresszus",
+      "B": "Itália egyesítése",
+      "C": "Solferinói csata",
+      "D": "Osztrák-Magyar Monarchia"
+    }
+  }
+]
