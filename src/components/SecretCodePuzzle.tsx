@@ -1,113 +1,98 @@
-import { Key, Lock, RotateCw } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { RotateCw } from 'lucide-react';
 
-export interface SecretCodePuzzleConfig {
-  correctAnswer: number[];
-}
+export default function CipherPuzzle() {
+  const [cubes, setCubes] = useState([1, 1, 1, 1]);
+  const [message, setMessage] = useState('');
 
-interface SecretCodePuzzleProps {
-  config?: SecretCodePuzzleConfig;
-  onSolved?: () => void;
-}
-
-const DEFAULT_CONFIG: SecretCodePuzzleConfig = {
-  correctAnswer: [1, 8, 5, 9],
-};
-
-export default function SecretCodePuzzle({ config, onSolved }: SecretCodePuzzleProps) {
-  const { correctAnswer } = config || DEFAULT_CONFIG;
-  const [dice, setDice] = useState<number[]>([1, 1, 1, 1]);
-  const [result, setResult] = useState<'correct' | 'wrong' | ''>('');
-
-  const updateDice = (index: number, value: number) => {
-    setDice((prev) => {
-      const next = [...prev];
-      next[index] = value;
-      return next;
-    });
-    setResult('');
+  const cipher = {
+    'A': '◐', 'B': '◑', 'C': '◒', 'D': '◓', 'E': '◔',
+    'F': '◕', 'G': '◖', 'H': '◗', 'I': '◘', 'J': '◙',
+    'K': '◚', 'L': '◛', 'M': '◜', 'N': '◝', 'O': '◞',
+    'P': '◟', 'Q': '◠', 'R': '◡', 'S': '◢', 'T': '◣',
+    'U': '◤', 'V': '◥', 'W': '◦', 'X': '◧', 'Y': '◨',
+    'Z': '◩'
   };
 
-  const rotateDice = (index: number) => {
-    const newValue = dice[index] === 9 ? 1 : dice[index] + 1;
-    updateDice(index, newValue);
+  const encryptedWord = '◢◞◛◕◔◡◞◝◘';
+
+  const rotateCube = (index) => {
+    const newCubes = [...cubes];
+    newCubes[index] = newCubes[index] === 9 ? 1 : newCubes[index] + 1;
+    setCubes(newCubes);
+    setMessage('');
   };
 
   const checkAnswer = () => {
-    const isCorrect = dice.every((val, idx) => val === correctAnswer[idx]);
-    setResult(isCorrect ? 'correct' : 'wrong');
+    if (cubes[0] === 1 && cubes[1] === 8 && cubes[2] === 5 && cubes[3] === 9) {
+      setMessage('Gratulálok, megfejtetted!');
+    } else {
+      setMessage('Rossz válasz!');
+    }
   };
 
-  useEffect(() => {
-    if (result === 'correct') setTimeout(() => onSolved?.(), 0);
-  }, [result, onSolved]);
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 p-8">
-      <div className="max-w-4xl mx-auto">
-        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 mb-8 border border-white/20 shadow-2xl">
-          <div className="flex items-center gap-3 mb-4">
-            <Lock className="text-yellow-300" size={28} />
-            <h2 className="text-2xl font-bold text-white">Titkos Üzenet</h2>
-          </div>
-          <div className="bg-black/30 rounded-lg p-6 font-mono text-center">
-            <p className="text-3xl text-green-400 tracking-wider">19-15-12-6-5-18-9-14-15-9</p>
-          </div>
+    <div className="min-h-screen bg-purple-600 flex items-center justify-center p-8">
+      <div className="bg-white rounded-lg shadow-2xl p-8 max-w-2xl w-full">
+        <h1 className="text-3xl font-bold text-purple-800 mb-6 text-center">
+          Fejdsd meg!
+        </h1>
+
+        <div className="bg-purple-50 p-6 rounded-lg mb-6">
+          <p className="text-4xl text-center tracking-widest font-mono text-purple-900 mb-4">
+            {encryptedWord}
+          </p>
         </div>
 
-        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 mb-8 border border-white/20 shadow-2xl">
-          <div className="flex items-center gap-3 mb-4">
-            <Key className="text-yellow-300" size={28} />
-            <h2 className="text-2xl font-bold text-white">Megoldó Kulcs</h2>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-white/90 text-sm">
-            <div className="bg-black/20 p-3 rounded text-center">A=1, B=2, C=3</div>
-            <div className="bg-black/20 p-3 rounded text-center">D=4, E=5, F=6</div>
-            <div className="bg-black/20 p-3 rounded text-center">G=7, H=8, I=9</div>
-            <div className="bg-black/20 p-3 rounded text-center">J=10, K=11, L=12</div>
-            <div className="bg-black/20 p-3 rounded text-center">M=13, N=14, O=15</div>
-            <div className="bg-black/20 p-3 rounded text-center">P=16, Q=17, R=18</div>
-            <div className="bg-black/20 p-3 rounded text-center">S=19, T=20, U=21</div>
-            <div className="bg-black/20 p-3 rounded text-center">V=22, W=23, X=24</div>
-            <div className="bg-black/20 p-3 rounded text-center">Y=25, Z=26</div>
-          </div>
-        </div>
-
-        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 mb-6 border border-white/20 shadow-2xl">
-          <h2 className="text-2xl font-bold text-white mb-6 text-center">
-            Keresd meg a titkos üzenetet és állítsd be a helyes évszám kombinációt!
-          </h2>
-          <div className="flex justify-center gap-4 mb-6">
-            {dice.map((value, index) => (
-              <div key={index} className="flex flex-col items-center gap-2">
-                <div className="w-20 h-20 bg-white rounded-xl shadow-lg flex items-center justify-center text-4xl font-bold text-purple-900">
-                  {value}
-                </div>
-                <button
-                  onClick={() => rotateDice(index)}
-                  className="p-2 bg-blue-500 hover:bg-blue-600 rounded-lg transition-colors"
-                  aria-label={`Forgasd a ${index + 1}. kockát`}
-                >
-                  <RotateCw className="text-white" size={20} />
-                </button>
+        <div className="bg-gray-50 p-4 rounded-lg mb-8">
+          <h3 className="font-semibold text-purple-800 mb-3">Megoldó kulcs:</h3>
+          <div className="grid grid-cols-2 gap-2 text-sm">
+            {Object.entries(cipher).map(([letter, symbol]) => (
+              <div key={letter} className="flex items-center gap-2">
+                <span className="font-bold text-purple-700">{letter}:</span>
+                <span className="text-2xl">{symbol}</span>
               </div>
             ))}
           </div>
-          <button
-            onClick={checkAnswer}
-            className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-4 px-8 rounded-xl text-xl transition-all transform hover:scale-105 shadow-lg"
-          >
-            Beküldés
-          </button>
         </div>
 
-        {result && (
-          <div
-            className={`rounded-2xl p-6 text-center text-xl font-bold animate-pulse ${
-              result === 'correct' ? 'bg-green-500/90 text-white' : 'bg-red-500/90 text-white'
-            }`}
-          >
-            {result === 'correct' ? '🎉 Gratulálok, Megfejtetted! 🎉' : '❌ Rossz válasz!'}
+        <h2 className="text-2xl font-bold text-purple-800 mb-4 text-center">
+          Mikor történt?
+        </h2>
+        <p className="text-center text-purple-700 mb-6">
+          Állítsd be a helyes kombinációt!
+        </p>
+
+        <div className="flex justify-center gap-4 mb-6">
+          {cubes.map((value, index) => (
+            <div key={index} className="flex flex-col items-center">
+              <div className="bg-purple-700 text-white text-4xl font-bold w-20 h-20 flex items-center justify-center rounded-lg shadow-lg mb-2">
+                {value}
+              </div>
+              <button
+                onClick={() => rotateCube(index)}
+                className="bg-purple-500 hover:bg-purple-600 text-white p-2 rounded-full transition"
+              >
+                <RotateCw size={20} />
+              </button>
+            </div>
+          ))}
+        </div>
+
+        <button
+          onClick={checkAnswer}
+          className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg transition text-lg"
+        >
+          Beküldés
+        </button>
+
+        {message && (
+          <div className={`mt-6 p-4 rounded-lg text-center font-bold text-lg ${
+            message.includes('Gratulálok') 
+              ? 'bg-green-100 text-green-800' 
+              : 'bg-red-100 text-red-800'
+          }`}>
+            {message}
           </div>
         )}
       </div>
