@@ -1,0 +1,62 @@
+{
+  "title": "Szóválasztó",
+  "number_of_selectable_letters": 4,
+  "question_descriptions": [
+    [
+      "Ha Itália a Fekete tenger mellett fekszik akkor - V",
+      "Ha Németország szomszédos volt Olaszországgal akkor - Sz",
+      "Ha a mostani Róma 1870-ben csatlakozott Olaszországhoz akkor - Cs",
+      "Ha Pizza szomszédos Olaszországgal akkor - P"
+    ],
+    [
+      "Ha a 'Vörös sereget' Giuseppe Garibaldi vezette akkor - Á",
+      "Giuseppe Garibaldi csak halála előtt pár évvel lett híres akkor - E",
+      "Amikor számüzetésbe küldték éppen a Habsburg birodalomban tartózkodott - O",
+      "Ha Garibaldi 1807-1882 ig élt akkor - A"
+    ],
+    [
+      "Otto von Bismarck Franciaország egyik leghíresebb politikusa volt - R",
+      "Bismarckot Vas kancellárnak 'becézték' - T",
+      "Garibaldi 1861-ben Szardíniába utazott - H",
+      "Velence 1867-ben lett az olaszegység tagja - K"
+    ],
+    [
+      "A salferóni csatát a Szárdok elvesztették - D",
+      "A népek tavasza 1846-ban volt - T",
+      "A közép-olasz területek egy része szövetséget kötött a szárd királlyal - A",
+      "3. Napóleon Firenzénél csatázott 1859-ben - S"
+    ]
+  ],
+  "correct_letters": [
+    "CS",
+    "A",
+    "T",
+    "A"
+  ],
+  "possible_letters": [
+    [
+      "CS",
+      "SZ",
+      "V",
+      "P"
+    ],
+    [
+      "Á",
+      "A",
+      "O",
+      "E"
+    ],
+    [
+      "H",
+      "K",
+      "R",
+      "T"
+    ],
+    [
+      "S",
+      "A",
+      "T",
+      "D"
+    ]
+  ]
+}

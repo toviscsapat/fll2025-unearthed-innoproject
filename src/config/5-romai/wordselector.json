@@ -1,0 +1,83 @@
+{
+  "title": "Szóválasztó",
+  "number_of_selectable_letters": 6,
+  "question_descriptions": [
+    [
+      "Teszt 1",
+      "Teszt 1",
+      "Teszt 1",
+      "Teszt 1"
+    ],
+    [
+      "Ha a 'Vörös sereget' Giuseppe Garibaldi vezette akkor - Á",
+      "Giuseppe Garibaldi csak halála előtt pár évvel lett híres akkor - E",
+      "Amikor számüzetésbe küldték éppen a Habsburg birodalomban tartózkodott - O",
+      "Ha Garibaldi 1807-1882 ig élt akkor - A"
+    ],
+    [
+      "Otto von Bismarck Franciaország egyik leghíresebb politikusa volt - R",
+      "Bismarckot Vas kancellárnak 'becézték' - T",
+      "Garibaldi 1861-ben Szardíniába utazott - H",
+      "Velence 1867-ben lett az olaszegység tagja - K"
+    ],
+    [
+      "Teszt",
+      "Teszt"
+    ],
+    [
+      "Teszt",
+      "Teszt"
+    ],
+    [
+      "Teszt",
+      "Teszt",
+      "Teszt"
+    ]
+  ],
+  "correct_letters": [
+    "CS",
+    "A",
+    "T",
+    "A",
+    "X",
+    "O"
+  ],
+  "possible_letters": [
+    [
+      "CS",
+      "SZ",
+      "V",
+      "P"
+    ],
+    [
+      "X",
+      "A",
+      "O",
+      "E"
+    ],
+    [
+      "Y",
+      "K",
+      "R",
+      "T"
+    ],
+    [
+      "L",
+      "M",
+      "N",
+      "A"
+    ],
+    [
+      "B",
+      "D",
+      "F",
+      "G"
+    ],
+    [
+      "O",
+      "U",
+      "I",
+      "É"
+    ]
+  ]
+}

@@ -1,46 +1,29 @@
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown, ChevronUp, Wrench } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
+export const CONFIG_FILENAME = 'wordselector.json';
 
 export interface WordSelectorConfig {
   title: string;
   number_of_selectable_letters: number;
   correct_letters: string[];
-  possible_letters_position_1: string[];
-  possible_letters_position_2: string[];
-  possible_letters_position_3: string[];
-  possible_letters_position_4: string[];
-  possible_letters_position_5: string[];
+  possible_letters: string[][];
+  question_descriptions: string[][];
 }
 
 interface WordSelectorProps {
-  config?: WordSelectorConfig;
+  config: WordSelectorConfig;
   onSolved?: () => void;
+  showUpload?: boolean;
 }
 
-const DEFAULT_CONFIG: WordSelectorConfig = {
-  title: 'Szó kiválasztó',
-  number_of_selectable_letters: 5,
-  correct_letters: ['CS', 'A', 'T', 'A', ''],
-  possible_letters_position_1: ['V', 'SZ', 'CS', 'P', ''],
-  possible_letters_position_2: ['Á', 'E', 'O', 'A', ''],
-  possible_letters_position_3: ['R', 'T', 'H', 'K', ''],
-  possible_letters_position_4: ['D', 'T', 'A', 'S', ''],
-  possible_letters_position_5: ['A', 'O', 'J', 'S', ''],
-};
+const WordSelector: React.FC<WordSelectorProps> = ({ config, onSolved, showUpload }) => {
+  const [currentConfig, setCurrentConfig] = useState<WordSelectorConfig>(config);
+  const [configError, setConfigError] = useState<string | null>(null);
 
-const WordSelector: React.FC<WordSelectorProps> = ({ config, onSolved }) => {
-  const cfg = config || DEFAULT_CONFIG;
-
-  const columns: string[][] = [
-    cfg.possible_letters_position_1,
-    cfg.possible_letters_position_2,
-    cfg.possible_letters_position_3,
-    cfg.possible_letters_position_4,
-    cfg.possible_letters_position_5,
-  ];
+  const columns: string[][] = currentConfig.possible_letters;
 
   const [selectedLetters, setSelectedLetters] = useState<number[]>(
-    Array(cfg.number_of_selectable_letters).fill(0)
+    Array(currentConfig.number_of_selectable_letters).fill(0)
   );
   const [submittedWord, setSubmittedWord] = useState<string>('');
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
@@ -70,7 +53,7 @@ const WordSelector: React.FC<WordSelectorProps> = ({ config, onSolved }) => {
       })
       .join('');
     setSubmittedWord(word);
-    const correct = word === cfg.correct_letters.join('');
+    const correct = word === currentConfig.correct_letters.join('');
     setIsCorrect(correct);
   };
 
@@ -80,48 +63,36 @@ const WordSelector: React.FC<WordSelectorProps> = ({ config, onSolved }) => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-2xl w-full">
-        <h1 className="text-3xl font-bold text-center text-indigo-600 mb-8">{cfg.title}</h1>
+      <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-2xl w-full relative">
+        <h1 className="text-3xl font-bold text-center text-indigo-600 mb-8">
+          {currentConfig.title}
+        </h1>
 
         <div className="bg-blue-50 border-2 border-indigo-200 rounded-lg p-6 mb-8">
           <p className="text-center text-indigo-900 font-semibold mb-4">
-            Keresd meg a választ és olvasd össze a betűket! A helyes megoldást írd be a szövegdobozba.
+            Keresd meg a választ és olvasd össze a betűket! A helyes megoldást írd be a
+            szövegdobozba.
           </p>
-          
+
           <div className="space-y-4 text-sm text-gray-800">
-            <div>
-              <p className="font-bold text-indigo-700 mb-2">1</p>
-              <p>Ha Itália a Fekete tenger mellett fekszik akkor- V</p>
-              <p>Ha Németország szomszédos volt Olaszországgal akkor- Sz</p>
-              <p>Ha a mostani Róma 1870-ben csatlakozott Olaszországhoz akkor- Cs</p>
-              <p>Ha Pizza szomszédos Olaszországgal akkor- P</p>
-            </div>
-
-            <div>
-              <p className="font-bold text-indigo-700 mb-2">2</p>
-              <p>Ha a "Vörös sereget" Giuseppe Garibaldi vezette akkor- Á</p>
-              <p>Giuseppe Garibaldi csak halála előtt pár évvel lett híres akkor- E</p>
-              <p>Amikor számüzetésbe küldték éppen a Habsburg birodalomban tartózkodott- O</p>
-              <p>Ha Garibaldi 1807-1882 ig élt akkor- A</p>
-            </div>
-
-            <div>
-              <p className="font-bold text-indigo-700 mb-2">3</p>
-              <p>Otto von Bismarck Franciaország egyik leghíresebb politikusa volt- R</p>
-              <p>Bismarckot Vas kancellárnak "becézték"- T</p>
-              <p>Garibaldi 1861-ben Szardíniába utazott- H</p>
-              <p>Velence 1867-ben lett az olaszegység tagja- K</p>
-            </div>
-
-            <div>
-              <p className="font-bold text-indigo-700 mb-2">4</p>
-              <p>A salferóni csatát a Szárdok elvesztették- D</p>
-              <p>A népek tavasza 1846-ban volt- T</p>
-              <p>A közép-olasz területek egy része szövetséget kötött a szárd királlyal- A</p>
-              <p>3. Napóleon Firenzénél csatázott 1859-ben- S</p>
-            </div>
+            {currentConfig.question_descriptions.map((descriptions, idx) => (
+              <div key={idx}>
+                <p className="font-bold text-indigo-700 mb-2">{idx + 1}</p>
+                {descriptions.map((desc, descIdx) => (
+                  <p key={descIdx}>- {desc}</p>
+                ))}
+              </div>
+            ))}
           </div>
         </div>
+
+        {/* Upload moved to bottom as icon-only button */}
+
+        {configError && (
+          <div className="mb-4 text-center text-red-700 bg-red-100 p-3 rounded-lg">
+            {configError}
+          </div>
+        )}
 
         <div className="flex justify-center gap-4 mb-8">
           {selectedLetters.map((_, index) => (
@@ -174,6 +145,45 @@ const WordSelector: React.FC<WordSelectorProps> = ({ config, onSolved }) => {
               </span>
             </p>
           </div>
+        )}
+
+        {showUpload && (
+          <label
+            className="absolute bottom-4 right-4 p-2 rounded-lg cursor-pointer text-indigo-600 hover:text-indigo-800 shadow-md bg-white/0"
+            title="Konfiguráció betöltése"
+          >
+            <Wrench className="w-6 h-6" />
+            <input
+              type="file"
+              accept=".json,.js"
+              onChange={async (e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+                try {
+                  const text = await file.text();
+                  let parsed: unknown;
+                  try {
+                    parsed = JSON.parse(text);
+                  } catch {
+                    // eslint-disable-next-line no-eval
+                    parsed = eval('(' + text + ')');
+                  }
+                  setCurrentConfig(parsed as WordSelectorConfig);
+                  setConfigError(null);
+                  setSelectedLetters(
+                    Array((parsed as WordSelectorConfig).number_of_selectable_letters).fill(0)
+                  );
+                  setSubmittedWord('');
+                  setIsCorrect(null);
+                } catch (err: unknown) {
+                  const message = err instanceof Error ? err.message : String(err);
+                  setConfigError('Hiba a konfiguráció betöltésekor: ' + message);
+                }
+                e.currentTarget.value = '';
+              }}
+              className="hidden"
+            />
+          </label>
         )}
       </div>
     </div>

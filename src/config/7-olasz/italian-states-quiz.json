@@ -1,0 +1,65 @@
+{
+  "title": "Olasz államok kvíz",
+  "number_choice": {
+    "title": "Változtasd meg az olasz államok számát:",
+    "options": [
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      12,
+      15
+    ]
+  },
+  "followup": {
+    "question": "A(z) # db olasz államból melyiknek volt a vezetője II. Viktor Emánuel?",
+    "hints": [
+      "Ha a szám <strong>páros</strong>, akkor a válasz <strong>\"P\"</strong> betűvel kezdődik.",
+      "Különben ha <strong>hárommal osztható</strong>, a válasz <strong>négy szóból</strong> áll.",
+      "Különben ha <strong>öttel osztható</strong>, a válasz <strong>\"Sz\"</strong> betűvel kezdődik.",
+      "Különben <strong>\"L\"</strong> betűvel kezdődik."
+    ],
+    "answers": [
+      {
+        "id": 1,
+        "text": "Pápai Állam"
+      },
+      {
+        "id": 2,
+        "text": "Szardínia-Piemont Királyság"
+      },
+      {
+        "id": 3,
+        "text": "Lombardia-Velence Királyság"
+      },
+      {
+        "id": 4,
+        "text": "Parmai Hercegség"
+      },
+      {
+        "id": 5,
+        "text": "Toszkánai Nagy Hercegség"
+      },
+      {
+        "id": 6,
+        "text": "Nápoly és Szicília Királysága"
+      },
+      {
+        "id": 7,
+        "text": "Modenai és Reggiói Hercegség"
+      },
+      {
+        "id": 8,
+        "text": "Lukkai Hercegség"
+      }
+    ]
+  },
+  "solution": {
+    "option": 5,
+    "answer": 2
+  }
+}

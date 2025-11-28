@@ -1,1 +1,1 @@
-{"root":["./src/app.tsx","./src/main.tsx","./src/components/italianstatesquiz.tsx","./src/components/secretcodepuzzle.tsx","./src/components/wirecuttingmodule.tsx","./src/components/wordselector.tsx","./src/config/italianstatesquiz.ts","./src/config/secretcodepuzzle.ts","./src/config/wiremodules.ts","./src/config/wordselector.ts"],"version":"5.9.3"}
+{"root":["./src/app.tsx","./src/main.tsx","./src/components/italianstatesquiz.tsx","./src/components/secretcodepuzzle.tsx","./src/components/wirecuttingmodule.tsx","./src/components/wordselector.tsx"],"version":"5.9.3"}

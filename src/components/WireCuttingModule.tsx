@@ -1,5 +1,6 @@
-import { Check, RotateCcw, Scissors, Upload, X } from 'lucide-react';
+import { Check, Scissors, Wrench, X } from 'lucide-react';
 import React, { useState } from 'react';
+export const CONFIG_FILENAME = 'wire-modules.json';
 
 export interface WireLabel {
   identifier: string;
@@ -11,7 +12,7 @@ export interface QuestionGroup {
   wires: WireLabel[];
 }
 
-export interface SubModuleConfig {
+export interface WireCuttingConfig {
   id: string;
   identifiers: string; // concatenated list of possible identifiers
   correctAnswers: string; // concatenated list of identifiers that are correct
@@ -24,59 +25,12 @@ export interface SubModuleConfig {
 }
 
 interface WireCuttingModuleProps {
-  config?: SubModuleConfig[];
+  config: WireCuttingConfig[];
   onSolved?: () => void;
+  showUpload?: boolean;
 }
 
-const DEFAULT_CONFIG: SubModuleConfig[] = [
-  {
-    id: 'module-1',
-    identifiers: '12456790',
-    correctAnswers: '70',
-    baseColor: 'piros',
-    wireColors: ['piros', 'narancs'],
-    questionGroups: [
-      {
-        question: 'Ki volt Giuseppe Garibaldi?',
-        wires: [
-          { identifier: '1', label: 'Lengyel politikus' },
-          { identifier: '9', label: 'Olasz feltaláló' },
-          { identifier: '7', label: 'Olasz forradalmár' },
-          { identifier: '2', label: 'Orosz kovács' },
-        ],
-      },
-      {
-        question: 'Szicília melyik államhoz tartozott?',
-        wires: [
-          { identifier: '6', label: 'Szicília állam' },
-          { identifier: '5', label: 'Szárd-Habsburg királyság' },
-          { identifier: '4', label: 'Pápai állam' },
-          { identifier: '0', label: 'Szicíliai- és Nápolyi királyság' },
-        ],
-      },
-    ],
-  },
-  {
-    id: 'module-2',
-    identifiers: 'ABCD',
-    correctAnswers: 'B',
-    baseColor: 'kék',
-    wireColors: ['kék'],
-    questionGroups: [
-      {
-        question: '18… -ban mi történt?',
-        wires: [
-          { identifier: 'A', label: 'A Bécsi kongresszus' },
-          { identifier: 'B', label: 'Itália egyesítése' },
-          { identifier: 'C', label: 'Solferinói csata' },
-          { identifier: 'D', label: 'Osztrák-Magyar Monarchia' },
-        ],
-      },
-    ],
-  },
-];
-
-const colorMap: Record<string, { bg: string; border: string; light: string }> = {
+const COLOR_MAP: Record<string, { bg: string; border: string; light: string }> = {
   piros: { bg: 'bg-red-500', border: '#ef4444', light: 'bg-red-900' },
   narancs: { bg: 'bg-orange-500', border: '#f97316', light: 'bg-orange-900' },
   kék: { bg: 'bg-blue-500', border: '#3b82f6', light: 'bg-blue-900' },
@@ -86,7 +40,7 @@ const colorMap: Record<string, { bg: string; border: string; light: string }> = 
   fekete: { bg: 'bg-gray-900', border: '#111827', light: 'bg-gray-800' },
 };
 
-function normalizeConfig(incoming: SubModuleConfig[]): SubModuleConfig[] {
+function normalizeConfig(incoming: WireCuttingConfig[]): WireCuttingConfig[] {
   return incoming.map((m) => {
     if (m.wireLabels && !m.questionGroups) {
       const question = m.questions?.[0] || 'Válaszd ki a helyes választ!';
@@ -100,9 +54,9 @@ function normalizeConfig(incoming: SubModuleConfig[]): SubModuleConfig[] {
   });
 }
 
-const WireCuttingModule: React.FC<WireCuttingModuleProps> = ({ config, onSolved }) => {
-  const initial = normalizeConfig(config || DEFAULT_CONFIG);
-  const [subModules, setSubModules] = useState<SubModuleConfig[]>(initial);
+const WireCuttingModule: React.FC<WireCuttingModuleProps> = ({ config, onSolved, showUpload }) => {
+  const initial = normalizeConfig(config);
+  const [subModules, setSubModules] = useState<WireCuttingConfig[]>(initial);
   const [cutWires, setCutWires] = useState<Record<string, Set<string>>>(
     initial.reduce(
       (acc, m) => {
@@ -134,7 +88,7 @@ const WireCuttingModule: React.FC<WireCuttingModuleProps> = ({ config, onSolved 
       }
       if (!Array.isArray(parsed) || parsed.length === 0)
         throw new Error('Érvénytelen konfiguráció: tömb szükséges.');
-      const normalized = normalizeConfig(parsed as SubModuleConfig[]);
+      const normalized = normalizeConfig(parsed as WireCuttingConfig[]);
       setSubModules(normalized);
       setCutWires(
         normalized.reduce(
@@ -180,61 +134,33 @@ const WireCuttingModule: React.FC<WireCuttingModuleProps> = ({ config, onSolved 
     if (result) setTimeout(() => onSolved?.(), 0);
   }, [result, onSolved]);
 
-  const reset = () => {
-    setCutWires(
-      subModules.reduce(
-        (acc, m) => {
-          acc[m.id] = new Set();
-          return acc;
-        },
-        {} as Record<string, Set<string>>
-      )
-    );
-    setResult(null);
-  };
-
-  const getWireColor = (module: SubModuleConfig, index: number) => {
+  const getWireColor = (module: WireCuttingConfig, index: number) => {
     const color = module.wireColors[index % module.wireColors.length];
-    return colorMap[color] ? color : 'fehér';
+    return COLOR_MAP[color] ? color : 'fehér';
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 p-8">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto relative">
         <h1 className="text-4xl font-bold text-white mb-8 text-center flex items-center justify-center gap-3">
-          <Scissors className="w-10 h-10" /> Bomba Lefegyverzés - Történelem Modul
+          <Scissors className="w-10 h-10" /> Bomba Lefegyverzés
         </h1>
 
-        <div className="mb-8 flex justify-center">
-          <label className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-xl cursor-pointer transition-all shadow-lg shadow-purple-500/50 flex items-center gap-2 hover:scale-105">
-            <Upload className="w-5 h-5" /> Konfiguráció betöltése
-            <input type="file" accept=".json,.js" onChange={handleFileUpload} className="hidden" />
-          </label>
-        </div>
+        {/* Upload moved to bottom-right */}
 
         {configError && (
           <div className="mb-6 bg-red-600 text-white p-4 rounded-lg text-center">{configError}</div>
         )}
 
         <div className="grid grid-cols-1 gap-8 mb-8">
-          {subModules.map((module, moduleIndex) => {
-            const theme = colorMap[module.baseColor] || colorMap.fehér;
+          {subModules.map((module) => {
+            const theme = COLOR_MAP[module.baseColor] || COLOR_MAP.fehér;
             return (
               <div
                 key={module.id}
                 className={`${theme.light} border-4 rounded-xl p-6 backdrop-blur-sm shadow-2xl`}
                 style={{ borderColor: theme.border }}
               >
-                <div className="bg-black bg-opacity-40 rounded-lg p-4 mb-6">
-                  <h2 className="text-2xl font-bold text-white mb-2">Almodul-{moduleIndex + 1}</h2>
-                  <p className="text-gray-300 text-sm">
-                    Alapszín: <span className="font-semibold">{module.baseColor}</span>
-                  </p>
-                  <p className="text-gray-300 text-sm">
-                    Drótszínek:{' '}
-                    <span className="font-semibold">{module.wireColors.join(', ')}</span>
-                  </p>
-                </div>
                 {module.questionGroups?.map((group, gi) => (
                   <div key={gi} className="mb-6 last:mb-0">
                     <div className="bg-black bg-opacity-50 rounded-lg p-4 mb-4">
@@ -244,7 +170,7 @@ const WireCuttingModule: React.FC<WireCuttingModuleProps> = ({ config, onSolved 
                       {group.wires.map((wire, wi) => {
                         const isCut = cutWires[module.id].has(wire.identifier);
                         const wireColorName = getWireColor(module, wi);
-                        const wireTheme = colorMap[wireColorName];
+                        const wireTheme = COLOR_MAP[wireColorName];
                         return (
                           <div
                             key={wire.identifier}
@@ -284,13 +210,17 @@ const WireCuttingModule: React.FC<WireCuttingModuleProps> = ({ config, onSolved 
           >
             <Check className="w-6 h-6" /> Beküldés
           </button>
-          <button
-            onClick={reset}
-            className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-4 px-8 rounded-xl text-xl transition-all shadow-lg flex items-center gap-2 hover:scale-105"
-          >
-            <RotateCcw className="w-6 h-6" /> Újrakezd
-          </button>
         </div>
+
+        {showUpload && (
+          <label
+            className="absolute bottom-1 right-3 p-2 rounded-lg cursor-pointer text-indigo-600 hover:text-indigo-800 shadow-md bg-white/0"
+            title="Konfiguráció betöltése"
+          >
+            <Wrench className="w-6 h-6" />
+            <input type="file" accept=".json,.js" onChange={handleFileUpload} className="hidden" />
+          </label>
+        )}
 
         {result !== null && (
           <div
