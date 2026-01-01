@@ -1,83 +1,66 @@
 {
-  "title": "Szóválasztó",
-  "number_of_selectable_letters": 6,
+  "title": "szó kiválasztó",
+  "number_of_selectable_letters": 4,
   "question_descriptions": [
     [
-      "Teszt 1",
-      "Teszt 1",
-      "Teszt 1",
-      "Teszt 1"
+      "Tűzoltóságot NEM adták nekünk a rómaiak akkor– F",
+      "Bérházakat  NEM adták nekünk a rómaiak akkor– T",
+      "Gőzfürdőt  NEM adták nekünk a rómaiak akkor– P",
+      "Demokráciát  NEM adták nekünk a rómaiak akkor– R"
     ],
     [
-      "Ha a 'Vörös sereget' Giuseppe Garibaldi vezette akkor - Á",
-      "Giuseppe Garibaldi csak halála előtt pár évvel lett híres akkor - E",
-      "Amikor számüzetésbe küldték éppen a Habsburg birodalomban tartózkodott - O",
-      "Ha Garibaldi 1807-1882 ig élt akkor - A"
+      "Ha úgy szól a római mondás hogy: ,,Cirkuszt és pénzt” akkor– P",
+      "Ha úgy szól a római mondás hogy: ,,Kenyeret és cirkuszt” akkor– Ó",
+      "Ha úgy szól a római mondás hogy: ,,Színházat és kenyeret” akkor– R",
+      "Ha úgy szól a római mondás hogy: ,,Szavazatot és fürdőt” akkor— I"
     ],
     [
-      "Otto von Bismarck Franciaország egyik leghíresebb politikusa volt - R",
-      "Bismarckot Vas kancellárnak 'becézték' - T",
-      "Garibaldi 1861-ben Szardíniába utazott - H",
-      "Velence 1867-ben lett az olaszegység tagja - K"
+      "Ha Szabin nőket raboltak el a rómaiak feleségnek akkor– M",
+      "Ha Görög nőket raboltak el a rómaiak feleségnek akkor– Z",
+      "Ha nem raboltak el semmilyen nőt a rómaiak akkor– LY",
+      "Ha Szárd nőket raboltak el a rómaiak feleségnek akkor– Ó"
     ],
     [
-      "Teszt",
-      "Teszt"
-    ],
-    [
-      "Teszt",
-      "Teszt"
-    ],
-    [
-      "Teszt",
-      "Teszt",
-      "Teszt"
+      "Ha azért halt meg Remus mert becsmérelte az épülő falat akkor– A",
+      "Ha azért halt meg Remus mert csatában halt meg akkor– N",
+      "Ha azért halt meg Remus mert mert megölte a apja akkor– Ó",
+      "Ha azért halt meg Remus mert megmérgezték mert rossz király volt akkor– K"
     ]
   ],
   "correct_letters": [
-    "CS",
-    "A",
-    "T",
-    "A",
-    "X",
-    "O"
+    "R",
+    "Ó",
+    "M",
+    "A"
   ],
-  "possible_letters": [
-    [
-      "CS",
-      "SZ",
-      "V",
-      "P"
-    ],
-    [
-      "X",
-      "A",
-      "O",
-      "E"
-    ],
-    [
-      "Y",
-      "K",
-      "R",
-      "T"
-    ],
-    [
-      "L",
-      "M",
-      "N",
-      "A"
-    ],
-    [
-      "B",
-      "D",
-      "F",
-      "G"
-    ],
-    [
-      "O",
-      "U",
-      "I",
-      "É"
-    ]
+  "possible_letters_position_1": [
+    "F",
+    "T",
+    "R",
+    "P"
+  ],
+  "possible_letters_position_2": [
+    "P",
+    "R",
+    "Ó",
+    "I"
+  ],
+  "possible_letters_position_3": [
+    "M",
+    "Z",
+    "LY",
+    "Ó"
+  ],
+  "possible_letters_position_4": [
+    "N",
+    "A",
+    "Ó",
+    "K"
+  ],
+  "possible_letters_position_5": [
+    "S",
+    "J",
+    "O",
+    "A"
   ]
 }
