@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import ItalianStatesQuiz, {
-  ItalianStatesQuizConfig,
+import Quiz, {
+  QuizConfig,
   CONFIG_FILENAME as QUIZ_CONFIG,
-} from './components/ItalianStatesQuiz';
+} from './components/Quiz';
 import SecretCodePuzzle, {
   CONFIG_FILENAME as SECRET_CONFIG,
   SecretCodePuzzleConfig,
@@ -27,8 +27,8 @@ export default function App() {
   const initialModule = params.get('module') ?? '';
   const [moduleKey, setModuleKey] = useState<ModuleKey>(initialModule as ModuleKey);
   // runtime-loaded configs
-  const [italianStatesQuizConfig, setItalianStatesQuizConfig] = useState<
-    ItalianStatesQuizConfig | undefined
+  const [quizConfig, setQuizConfig] = useState<
+    QuizConfig | undefined
   >(undefined);
   const [secretCodePuzzleConfig, setSecretCodePuzzleConfig] = useState<
     SecretCodePuzzleConfig | undefined
@@ -46,7 +46,7 @@ export default function App() {
       setLoading(true);
       try {
         if (moduleKey === 'dev') {
-          setItalianStatesQuizConfig(undefined);
+          setQuizConfig(undefined);
           setSecretCodePuzzleConfig(undefined);
           setWireModules(undefined);
           setWordSelectorConfig(undefined);
@@ -80,7 +80,7 @@ export default function App() {
         ]);
 
         if (!mounted) return;
-        setItalianStatesQuizConfig(quizCfg);
+        setQuizConfig(quizCfg);
         setSecretCodePuzzleConfig(secretCfg);
         setWireModules(wireCfg);
         setWordSelectorConfig(wordCfg);
@@ -100,7 +100,7 @@ export default function App() {
   const hasWire = moduleKey === 'dev' ? true : !!wireModules;
   const hasSecret = moduleKey === 'dev' ? true : !!secretCodePuzzleConfig;
   const hasWord = moduleKey === 'dev' ? true : !!wordSelectorConfig;
-  const hasQuiz = moduleKey === 'dev' ? true : !!italianStatesQuizConfig;
+  const hasQuiz = moduleKey === 'dev' ? true : !!quizConfig;
 
   // dev mode will render modules even when configs are missing; inline simple fallbacks are used below
   const [active, setActive] = useState<ComponentKey>('home');
@@ -175,7 +175,7 @@ export default function App() {
                 onClick={() => setActive('quiz')}
                 className={`px-3 py-2 rounded ${solved.quiz ? 'bg-green-100 border border-green-300' : 'hover:bg-gray-100'}`}
               >
-                Olasz kvíz
+                Kvíz
               </button>
             )}
           </nav>
@@ -203,7 +203,7 @@ export default function App() {
                 <div className="p-4 border rounded">Szóválasztó — építs szavakat oszlopokból.</div>
               )}
               {hasQuiz && (
-                <div className="p-4 border rounded">Olasz államok kvíz — szabályalapú kvíz.</div>
+                <div className="p-4 border rounded">Kvíz — szabályalapú kvíz.</div>
               )}
             </div>
 
@@ -295,8 +295,8 @@ export default function App() {
         )}
         {active === 'quiz' && (
           <div>
-            {italianStatesQuizConfig || moduleKey === 'dev' ? (
-              <ItalianStatesQuiz
+            {quizConfig || moduleKey === 'dev' ? (
+              <Quiz
                 config={
                   moduleKey === 'dev'
                     ? {
@@ -304,7 +304,7 @@ export default function App() {
                         numberOptions: [1, 2, 3],
                         solution: { option: 1, answer: 1 },
                       }
-                    : italianStatesQuizConfig!
+                    : quizConfig!
                 }
                 onSolved={() => markSolved('quiz')}
                 showUpload={moduleKey === 'dev'}

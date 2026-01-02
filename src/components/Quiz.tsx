@@ -1,14 +1,14 @@
 import { RefreshCw, Wrench } from 'lucide-react';
 import React, { useState } from 'react';
-export const CONFIG_FILENAME = 'italian-states-quiz.json';
+export const CONFIG_FILENAME = 'quiz.json';
 
-interface ItalianStateAnswer {
+interface Answer {
   id: number;
   text: string;
 }
 
-export interface ItalianStatesQuizConfig {
-  answers: ItalianStateAnswer[];
+export interface QuizConfig {
+  answers: Answer[];
   numberOptions: number[];
   solution: { answer: number; option: number };
   // optional UI metadata coming from newer config format
@@ -18,14 +18,14 @@ export interface ItalianStatesQuizConfig {
   hints?: string[];
 }
 
-interface ItalianStatesQuizProps {
-  config: ItalianStatesQuizConfig;
+interface QuizProps {
+  config: QuizConfig;
   onSolved?: () => void;
   showUpload?: boolean;
 }
 
-const ItalianStatesQuiz: React.FC<ItalianStatesQuizProps> = ({ config, onSolved, showUpload }) => {
-  const normalize = (cfg: unknown): ItalianStatesQuizConfig => {
+const Quiz: React.FC<QuizProps> = ({ config, onSolved, showUpload }) => {
+  const normalize = (cfg: unknown): QuizConfig => {
     if (!cfg) {
       return {
         answers: [],
@@ -42,7 +42,7 @@ const ItalianStatesQuiz: React.FC<ItalianStatesQuizProps> = ({ config, onSolved,
       asObj.numberOptions &&
       Array.isArray(asObj.numberOptions)
     ) {
-      return asObj as unknown as ItalianStatesQuizConfig;
+      return asObj as unknown as QuizConfig;
     }
 
     // new nested format
@@ -77,10 +77,10 @@ const ItalianStatesQuiz: React.FC<ItalianStatesQuizProps> = ({ config, onSolved,
       numberTitle,
       questionTemplate,
       hints,
-    } as ItalianStatesQuizConfig;
+    } as QuizConfig;
   };
 
-  const [currentConfig, setCurrentConfig] = useState<ItalianStatesQuizConfig>(normalize(config));
+  const [currentConfig, setCurrentConfig] = useState<QuizConfig>(normalize(config));
   const [configError, setConfigError] = useState<string | null>(null);
 
   const [number, setNumber] = useState<number | null>(null);
@@ -102,9 +102,9 @@ const ItalianStatesQuiz: React.FC<ItalianStatesQuizProps> = ({ config, onSolved,
   );
 
   const computeOptionsFrom = (
-    cfg: ItalianStatesQuizConfig,
+    cfg: QuizConfig,
     count: number
-  ): ItalianStateAnswer[] => {
+  ): Answer[] => {
     const all = [...(cfg.answers || [])];
     const clamped = Math.max(0, Math.min(count, all.length));
     if (all.length <= clamped) return all.slice();
@@ -132,11 +132,11 @@ const ItalianStatesQuiz: React.FC<ItalianStatesQuizProps> = ({ config, onSolved,
     return result;
   };
 
-  const getAnswerOptions = React.useCallback((): ItalianStateAnswer[] => {
+  const getAnswerOptions = React.useCallback((): Answer[] => {
     return computeOptionsByCount(number);
   }, [computeOptionsByCount, number]);
 
-  const [answerOptions, setAnswerOptions] = useState<ItalianStateAnswer[]>(() =>
+  const [answerOptions, setAnswerOptions] = useState<Answer[]>(() =>
     // when no number selected, show all answers
     currentConfig.answers.slice()
   );
@@ -361,4 +361,4 @@ const ItalianStatesQuiz: React.FC<ItalianStatesQuizProps> = ({ config, onSolved,
   );
 };
 
-export default ItalianStatesQuiz;
+export default Quiz;
