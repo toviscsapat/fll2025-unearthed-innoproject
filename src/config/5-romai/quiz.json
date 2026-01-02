@@ -18,8 +18,8 @@
   "followup": {
     "question": "Július cézár milyen államformában uralkodott?",
     "hints": [
-      "Páros akkor K val kezdődik",
-      "Osztható 3 mal akkor az Oligarchia",
+      "Ha a szám páros akkor K val kezdődik",
+      " Ha a szám osztható 3-mal akkor az Oligarchia",
       "Ha 5-tel osztható akkor Cs vel kezdődik",
       "Különben a 4. Betűje Á"
     ],
