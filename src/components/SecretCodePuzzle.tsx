@@ -51,6 +51,7 @@ const SecretCodePuzzle: React.FC<SecretCodePuzzleProps> = ({ config, onSolved, s
     X: '◧',
     Y: '◨',
     Z: '◩',
+    ' ': '⬚',
   };
 
   const encryptedWord = currentConfig.secretMessage;
@@ -131,7 +132,9 @@ const SecretCodePuzzle: React.FC<SecretCodePuzzleProps> = ({ config, onSolved, s
           <div className="grid grid-cols-2 gap-2 text-sm">
             {Object.entries(CHIPER).map(([letter, symbol]) => (
               <div key={letter} className="flex items-center gap-2">
-                <span className="font-bold text-purple-700">{letter}:</span>
+                <span className="font-bold text-purple-700">
+                  {letter === ' ' ? 'SZÓKÖZ' : letter}:
+                </span>
                 <span className="text-2xl">{symbol}</span>
               </div>
             ))}
