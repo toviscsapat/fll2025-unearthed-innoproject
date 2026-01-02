@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Quiz, {
-  QuizConfig,
   CONFIG_FILENAME as QUIZ_CONFIG,
+  QuizConfig,
 } from './components/Quiz';
 import SecretCodePuzzle, {
   CONFIG_FILENAME as SECRET_CONFIG,
@@ -255,7 +255,7 @@ export default function App() {
               <SecretCodePuzzle
                 config={
                   moduleKey === 'dev'
-                    ? { secretMessage: 'DEV', correctAnswer: [1] }
+                    ? { secretMessage: 'DEV', correctAnswer: [1], question: 'Dev Question?' }
                     : secretCodePuzzleConfig!
                 }
                 onSolved={() => markSolved('secret')}

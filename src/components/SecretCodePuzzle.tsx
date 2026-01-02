@@ -5,6 +5,7 @@ export const CONFIG_FILENAME = 'secret-code-puzzle.json';
 export interface SecretCodePuzzleConfig {
   secretMessage: string;
   correctAnswer: number[];
+  question?: string;
 }
 
 interface SecretCodePuzzleProps {
@@ -133,7 +134,9 @@ const SecretCodePuzzle: React.FC<SecretCodePuzzleProps> = ({ config, onSolved, s
           </div>
         </div>
 
-        <h2 className="text-2xl font-bold text-purple-800 mb-4 text-center">Mikor történt?</h2>
+        <h2 className="text-2xl font-bold text-purple-800 mb-4 text-center">
+          {currentConfig.question || 'Mikor történt?'}
+        </h2>
         <p className="text-center text-purple-700 mb-6">Állítsd be a helyes kombinációt!</p>
 
         <div className="flex justify-center gap-4 mb-6">
