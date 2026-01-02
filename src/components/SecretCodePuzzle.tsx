@@ -1,4 +1,4 @@
-import { RotateCw, Wrench } from 'lucide-react';
+import { ChevronDown, ChevronUp, Wrench } from 'lucide-react';
 import React, { useState } from 'react';
 export const CONFIG_FILENAME = 'secret-code-puzzle.json';
 
@@ -55,9 +55,13 @@ const SecretCodePuzzle: React.FC<SecretCodePuzzleProps> = ({ config, onSolved, s
 
   const encryptedWord = currentConfig.secretMessage;
 
-  const rotateCube = (index: number) => {
+  const rotateCube = (index: number, direction: 'up' | 'down') => {
     const newCubes = [...cubes];
-    newCubes[index] = newCubes[index] === 9 ? 0 : newCubes[index] + 1;
+    if (direction === 'up') {
+      newCubes[index] = newCubes[index] === 9 ? 0 : newCubes[index] + 1;
+    } else {
+      newCubes[index] = newCubes[index] === 0 ? 9 : newCubes[index] - 1;
+    }
     setCubes(newCubes);
     setMessage('');
   };
@@ -141,15 +145,23 @@ const SecretCodePuzzle: React.FC<SecretCodePuzzleProps> = ({ config, onSolved, s
 
         <div className="flex justify-center gap-4 mb-6">
           {cubes.map((value, index) => (
-            <div key={index} className="flex flex-col items-center">
-              <div className="bg-purple-700 text-white text-4xl font-bold w-20 h-20 flex items-center justify-center rounded-lg shadow-lg mb-2">
+            <div key={index} className="flex flex-col items-center gap-2">
+              <button
+                onClick={() => rotateCube(index, 'up')}
+                className="bg-purple-500 hover:bg-purple-600 text-white p-2 rounded-lg transition shadow-md"
+                aria-label="Növelés"
+              >
+                <ChevronUp size={24} />
+              </button>
+              <div className="bg-purple-700 text-white text-4xl font-bold w-20 h-20 flex items-center justify-center rounded-xl shadow-inner border-2 border-purple-500">
                 {value}
               </div>
               <button
-                onClick={() => rotateCube(index)}
-                className="bg-purple-500 hover:bg-purple-600 text-white p-2 rounded-full transition"
+                onClick={() => rotateCube(index, 'down')}
+                className="bg-purple-500 hover:bg-purple-600 text-white p-2 rounded-lg transition shadow-md"
+                aria-label="Csökkentés"
               >
-                <RotateCw size={20} />
+                <ChevronDown size={24} />
               </button>
             </div>
           ))}
