@@ -48,7 +48,7 @@ const Quiz: React.FC<QuizProps> = ({ config, onSolved, showUpload }) => {
     // new nested format
     const answers =
       (asObj.followup && (asObj.followup as Record<string, unknown>).answers) ??
-      (asObj.answers as ItalianStateAnswer[] | undefined);
+      (asObj.answers as Answer[] | undefined);
     const numberOptions = ((asObj.number_choice &&
       (asObj.number_choice as Record<string, unknown>).options) ??
       (asObj.numberOptions as number[] | undefined) ?? [5]) as number[];
@@ -94,7 +94,7 @@ const Quiz: React.FC<QuizProps> = ({ config, onSolved, showUpload }) => {
   const isCorrectNumber = number === currentConfig.solution.option;
 
   const computeOptionsByCount = React.useCallback(
-    (count: number | null): ItalianStateAnswer[] => {
+    (count: number | null): Answer[] => {
       const actual = count === null ? currentConfig.answers.length : count;
       return computeOptionsFrom(currentConfig, actual);
     },
