@@ -1,0 +1,59 @@
+{
+  "title": "Róma kvíz",
+  "number_choice": {
+    "title": "Változtasd meg az évszám utolsó számát:",
+    "options": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ]
+  },
+  "followup": {
+    "question": "
+Július cézár milyen államformában uralkodott?
+
+",
+    "hints": [
+      "Páros akkor K val kezdődik
+",
+      " Osztható 3 mal akkor az Oligarchia
+",
+      "Ha 5-tel osztható akkor Cs vel kezdődik
+",
+      "Különben a 4. Betűje Á
+
+"
+    ],
+    "answers": [
+      {
+        "id": 1,
+        "text": "Császárság"
+      },
+      {
+        "id": 2,
+        "text": "Monachia"
+      },
+      {
+        "id": 3,
+        "text": "Köztársaság"
+      },
+      {
+        "id": 4,
+        "text": "Oligarchia"
+      },
+      {
+      }
+    ]
+  },
+  "solution": {
+    "option": 0,
+    "answer": 3
+  }
+}
