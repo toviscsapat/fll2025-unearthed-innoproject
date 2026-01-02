@@ -135,7 +135,7 @@ const WordSelector: React.FC<WordSelectorProps> = ({ config, onSolved, showUploa
           >
             <p className="text-center text-lg">
               <span className={`font-semibold ${isCorrect ? 'text-green-800' : 'text-red-800'}`}>
-                {isCorrect ? 'Túl élted 😊' : 'Felrobbantál :('}
+                {isCorrect ? 'Túlélted 😊' : 'Felrobbantál :('}
               </span>
               <br />
               <span
