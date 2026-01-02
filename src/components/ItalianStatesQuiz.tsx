@@ -169,14 +169,16 @@ const ItalianStatesQuiz: React.FC<ItalianStatesQuizProps> = ({ config, onSolved,
   const reset = () => {
     setSelectedAnswer(null);
     setShowResult(false);
-    setAnswerOptions(getAnswerOptions());
+    // always show all answers regardless of previously selected number
+    setAnswerOptions(currentConfig.answers.slice());
   };
 
   const changeNumber = (newNumber: number) => {
     setNumber(newNumber);
     setSelectedAnswer(null);
     setShowResult(false);
-    setAnswerOptions(computeOptionsFrom(currentConfig, newNumber));
+    // keep showing all answers even when a number is chosen
+    setAnswerOptions(currentConfig.answers.slice());
   };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
