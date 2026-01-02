@@ -19,7 +19,7 @@ const SecretCodePuzzle: React.FC<SecretCodePuzzleProps> = ({ config, onSolved, s
   const [currentConfig, setCurrentConfig] = useState<SecretCodePuzzleConfig>(config);
   const [configError, setConfigError] = useState<string | null>(null);
 
-  const [cubes, setCubes] = useState(currentConfig.correctAnswer.map(() => 1));
+  const [cubes, setCubes] = useState(currentConfig.correctAnswer.map(() => 0));
   const [message, setMessage] = useState('');
   const [result, setResult] = useState<boolean | null>(null);
 
@@ -56,7 +56,7 @@ const SecretCodePuzzle: React.FC<SecretCodePuzzleProps> = ({ config, onSolved, s
 
   const rotateCube = (index: number) => {
     const newCubes = [...cubes];
-    newCubes[index] = newCubes[index] === 9 ? 1 : newCubes[index] + 1;
+    newCubes[index] = newCubes[index] === 9 ? 0 : newCubes[index] + 1;
     setCubes(newCubes);
     setMessage('');
   };
@@ -88,7 +88,7 @@ const SecretCodePuzzle: React.FC<SecretCodePuzzleProps> = ({ config, onSolved, s
       }
       setCurrentConfig(parsed as SecretCodePuzzleConfig);
       setConfigError(null);
-      setCubes((parsed as SecretCodePuzzleConfig).correctAnswer.map(() => 1));
+      setCubes((parsed as SecretCodePuzzleConfig).correctAnswer.map(() => 0));
       setMessage('');
       setResult(null);
     } catch (err: unknown) {
