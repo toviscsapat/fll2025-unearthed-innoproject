@@ -158,11 +158,12 @@ const Quiz: React.FC<QuizProps> = ({ config, onSolved, showUpload }) => {
     setIsCorrect(!!correct);
     setShowResult(true);
     if (correct && typeof onSolved === 'function') {
-      try {
-        onSolved();
-      } catch (err) {
-        // ignore callback errors
-      }
+      // Small delay to let the user see the "Correct" state before the redirect/confetti
+      setTimeout(() => onSolved(), 500);
+    } else if (!correct) {
+      // Reset after a short delay or immediately if desired
+      setSelectedAnswer(null);
+      setNumber(null);
     }
   };
 

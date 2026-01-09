@@ -20,7 +20,7 @@ const WordSelector: React.FC<WordSelectorProps> = ({ config, onSolved, showUploa
   const [currentConfig, setCurrentConfig] = useState<WordSelectorConfig>(config);
   const [configError, setConfigError] = useState<string | null>(null);
 
-  const columns: string[][] = currentConfig.possible_letters;
+  const columns: string[][] = currentConfig.possible_letters.map((col) => ['-', ...col]);
 
   const [selectedLetters, setSelectedLetters] = useState<number[]>(
     Array(currentConfig.number_of_selectable_letters).fill(0)
@@ -35,6 +35,7 @@ const WordSelector: React.FC<WordSelectorProps> = ({ config, onSolved, showUploa
       next[index] = (next[index] + 1) % letters.length;
       return next;
     });
+    setIsCorrect(null);
   };
 
   const handleDown = (index: number) => {
@@ -44,6 +45,7 @@ const WordSelector: React.FC<WordSelectorProps> = ({ config, onSolved, showUploa
       next[index] = (next[index] - 1 + letters.length) % letters.length;
       return next;
     });
+    setIsCorrect(null);
   };
 
   const handleSubmit = () => {
@@ -55,10 +57,17 @@ const WordSelector: React.FC<WordSelectorProps> = ({ config, onSolved, showUploa
     setSubmittedWord(word);
     const correct = word === currentConfig.correct_letters.join('');
     setIsCorrect(correct);
+    if (!correct) {
+      // Reset letters to initial (0 index) if incorrect
+      setSelectedLetters(Array(currentConfig.number_of_selectable_letters).fill(0));
+    }
   };
 
+
   useEffect(() => {
-    if (isCorrect) setTimeout(() => onSolved?.(), 0);
+    if (isCorrect) {
+      setTimeout(() => onSolved?.(), 500);
+    }
   }, [isCorrect, onSolved]);
 
   return (

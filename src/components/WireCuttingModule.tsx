@@ -108,13 +108,23 @@ const WireCuttingModule: React.FC<WireCuttingModuleProps> = ({ config, onSolved,
     event.target.value = '';
   };
 
-  const toggleWire = (moduleId: string, identifier: string) => {
+  const toggleWire = (moduleId: string, identifier: string, identifiersInGroup: string[]) => {
     setCutWires((prev) => {
-      const next = { ...prev };
-      const set = new Set(next[moduleId]);
-      set.has(identifier) ? set.delete(identifier) : set.add(identifier);
-      next[moduleId] = set;
-      return next;
+      const nextSet = new Set(prev[moduleId]);
+      const isAlreadyCut = nextSet.has(identifier);
+
+      // Remove all identifiers belonging to this specific question group
+      identifiersInGroup.forEach((id) => nextSet.delete(id));
+
+      // If it wasn't cut before, add it now (exclusive choice for this group)
+      if (!isAlreadyCut) {
+        nextSet.add(identifier);
+      }
+
+      return {
+        ...prev,
+        [moduleId]: nextSet,
+      };
     });
     setResult(null);
   };
@@ -128,10 +138,26 @@ const WireCuttingModule: React.FC<WireCuttingModuleProps> = ({ config, onSolved,
       return true;
     });
     setResult(allCorrect);
+
+    if (!allCorrect) {
+      // Reset cut wires for all sub-modules if the overall solution is incorrect
+      setCutWires(
+        subModules.reduce(
+          (acc, m) => {
+            acc[m.id] = new Set();
+            return acc;
+          },
+          {} as Record<string, Set<string>>
+        )
+      );
+    }
   };
 
   React.useEffect(() => {
-    if (result) setTimeout(() => onSolved?.(), 0);
+    if (result) {
+      const timer = setTimeout(() => onSolved?.(), 500);
+      return () => clearTimeout(timer);
+    }
   }, [result, onSolved]);
 
   const getWireColor = (module: WireCuttingConfig, index: number) => {
@@ -187,7 +213,13 @@ const WireCuttingModule: React.FC<WireCuttingModuleProps> = ({ config, onSolved,
                               <span className="text-white text-lg flex-1">{wire.label}</span>
                             </div>
                             <button
-                              onClick={() => toggleWire(module.id, wire.identifier)}
+                              onClick={() =>
+                                toggleWire(
+                                  module.id,
+                                  wire.identifier,
+                                  group.wires.map((w) => w.identifier)
+                                )
+                              }
                               className={`px-5 py-3 rounded-lg font-bold text-xl transition-all min-w-[60px] ${isCut ? 'bg-red-600 text-white shadow-lg shadow-red-500/50 scale-95' : 'bg-gray-700 text-white hover:bg-gray-600 hover:scale-105'}`}
                             >
                               {wire.identifier}

@@ -65,6 +65,7 @@ const SecretCodePuzzle: React.FC<SecretCodePuzzleProps> = ({ config, onSolved, s
     }
     setCubes(newCubes);
     setMessage('');
+    setResult(null);
   };
 
   const checkAnswer = () => {
@@ -76,6 +77,8 @@ const SecretCodePuzzle: React.FC<SecretCodePuzzleProps> = ({ config, onSolved, s
     } else {
       setMessage('Rossz válasz!');
       setResult(false);
+      // Reset cubes to 0 after incorrect submission
+      setCubes(currentConfig.correctAnswer.map(() => 0));
     }
   };
 
@@ -105,7 +108,10 @@ const SecretCodePuzzle: React.FC<SecretCodePuzzleProps> = ({ config, onSolved, s
   };
 
   React.useEffect(() => {
-    if (result) setTimeout(() => onSolved?.(), 0);
+    if (result) {
+      const timer = setTimeout(() => onSolved?.(), 0);
+      return () => clearTimeout(timer);
+    }
   }, [result, onSolved]);
 
   return (

@@ -1,3 +1,4 @@
+import confetti from 'canvas-confetti';
 import { useEffect, useState } from 'react';
 import Quiz, {
   CONFIG_FILENAME as QUIZ_CONFIG,
@@ -122,7 +123,10 @@ export default function App() {
   }, []);
 
   const markSolved = (key: ComponentKey) => {
+    console.log(`Module solved: ${key}`);
+
     setSolved((prev) => {
+      if (prev[key]) return prev;
       const next = { ...prev, [key]: true };
       try {
         localStorage.setItem('solvedModules', JSON.stringify(next));
@@ -131,6 +135,29 @@ export default function App() {
       }
       return next;
     });
+
+    // Always trigger effects on success, even if already solved
+    console.log('Triggering confetti...', typeof confetti);
+    try {
+      const confettiFunc = (confetti as unknown as { default?: typeof confetti }).default || confetti;
+      if (typeof confettiFunc === 'function') {
+        confettiFunc({
+          particleCount: 400,
+          spread: 90,
+          origin: { y: 0.6 },
+          zIndex: 9999,
+        });
+      } else {
+        console.error('Confetti is not a function:', confettiFunc);
+      }
+    } catch (err) {
+      console.error('Confetti error:', err);
+    }
+
+    setTimeout(() => {
+      console.log('Navigating back home...');
+      setActive('home');
+    }, 2000);
   };
 
   return (
