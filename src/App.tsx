@@ -221,6 +221,89 @@ export default function App() {
     setActive('home');
   };
 
+  const selectModule = (key: ModuleKey) => {
+    setModuleKey(key);
+    const p = new URLSearchParams(window.location.search);
+    p.set('module', key);
+    const url = window.location.pathname + '?' + p.toString();
+    window.history.replaceState({}, '', url);
+    try {
+      localStorage.removeItem('solvedModules');
+    } catch (err) {
+      // ignore storage errors (e.g., private mode)
+    }
+    setSolved({ home: false, wire: false, secret: false, word: false, quiz: false });
+    setTime(0);
+    setTimerStarted(false);
+    setTimerRunning(false);
+    setResetCounter((prev) => prev + 1);
+    setActive('home');
+  };
+
+  if (moduleKey === '') {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center p-6">
+        <div className="max-w-4xl w-full">
+          <div className="text-center mb-12">
+            <h1 className="text-5xl font-black text-indigo-900 mb-4 drop-shadow-sm">Bombajó Töri</h1>
+            <p className="text-xl text-gray-600 font-medium">Válassz egy történelmi korszakot a küldetés megkezdéséhez!</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div
+              onClick={() => selectModule('5-romai')}
+              className="bg-white rounded-3xl shadow-xl overflow-hidden cursor-pointer hover:scale-[1.03] transition-all hover:shadow-2xl group border-4 border-transparent hover:border-orange-400"
+            >
+              <div className="h-64 bg-orange-50 flex items-center justify-center p-8 overflow-hidden">
+                <img src="/assets/roma_module.png" alt="Római Birodalom" className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500" />
+              </div>
+              <div className="p-8">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="bg-orange-100 text-orange-700 text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider">5. Osztály</span>
+                  <span className="text-orange-500 font-bold">Ókor</span>
+                </div>
+                <h2 className="text-3xl font-black text-gray-900 mb-3">Római Birodalom</h2>
+                <p className="text-gray-600">Ismerd meg a birodalom tündöklését, a légiókat és a rómaiak mindennapjait izgalmas feladatokon keresztül.</p>
+                <div className="mt-6 flex items-center text-orange-600 font-bold gap-2">
+                  Kezdés <span className="text-xl">→</span>
+                </div>
+              </div>
+            </div>
+
+            <div
+              onClick={() => selectModule('7-olasz')}
+              className="bg-white rounded-3xl shadow-xl overflow-hidden cursor-pointer hover:scale-[1.03] transition-all hover:shadow-2xl group border-4 border-transparent hover:border-green-400"
+            >
+              <div className="h-64 bg-green-50 flex items-center justify-center p-8 overflow-hidden">
+                <img src="/assets/italy_module.png" alt="Olasz Egység" className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500" />
+              </div>
+              <div className="p-8">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="bg-green-100 text-green-700 text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider">7. Osztály</span>
+                  <span className="text-green-500 font-bold">19. Század</span>
+                </div>
+                <h2 className="text-3xl font-black text-gray-900 mb-3">Olasz Egység</h2>
+                <p className="text-gray-600">Vegyél részt Garibaldi és Cavour forradalmi küzdelmeiben, és segíts egyesíteni az Itáliai-félszigetet.</p>
+                <div className="mt-6 flex items-center text-green-600 font-bold gap-2">
+                  Kezdés <span className="text-xl">→</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-12 text-center">
+            <button
+              onClick={() => selectModule('dev')}
+              className="text-gray-400 hover:text-gray-600 text-sm font-medium transition-colors underline underline-offset-4"
+            >
+              Belépés fejlesztői módban
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={`min-h-screen relative transition-colors duration-1000 ${allModulesSolved ? 'bg-green-500' : 'bg-gray-50'}`}>
       <header className="bg-white shadow">
@@ -290,7 +373,7 @@ export default function App() {
               />
             </div>
 
-            {!timerStarted && moduleKey !== '' && (
+            {!timerStarted && (
               <div className="mb-12 p-12 bg-white rounded-3xl shadow-xl text-center border-t-8 border-indigo-600 relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-50 -mr-16 -mt-16 rounded-full opacity-50" />
                 <div className="absolute bottom-0 left-0 w-24 h-24 bg-indigo-50 -ml-12 -mb-12 rounded-full opacity-50" />
@@ -497,21 +580,7 @@ export default function App() {
                 value={moduleKey}
                 onChange={(e) => {
                   const val = e.target.value as ModuleKey;
-                  setModuleKey(val);
-                  const p = new URLSearchParams(window.location.search);
-                  p.set('module', val);
-                  const url = window.location.pathname + '?' + p.toString();
-                  window.history.replaceState({}, '', url);
-                  try {
-                    localStorage.removeItem('solvedModules');
-                  } catch (err) {
-                    // ignore storage errors (e.g., private mode)
-                  }
-                  setSolved({ home: false, wire: false, secret: false, word: false, quiz: false });
-                  setTime(0);
-                  setTimerStarted(false);
-                  setTimerRunning(false);
-                  setResetCounter((prev) => prev + 1);
+                  selectModule(val);
                 }}
                 className="border rounded-lg px-3 py-2 bg-gray-50 text-sm focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
               >
