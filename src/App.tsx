@@ -280,18 +280,31 @@ export default function App() {
 
       <main className="max-w-6xl mx-auto p-6 pb-28">
         {active === 'home' && (
-          <section className="animate-in fade-in duration-700">
+          <section className="animate-in fade-in slide-in-from-bottom-4 duration-1000">
+            {/* Hero Image Section */}
+            <div className="relative mb-8 rounded-3xl overflow-hidden shadow-xl border-4 border-white flex justify-center items-center">
+              <img
+                src="/assets/history_header_v2.png"
+                alt="Történelmi Kaland"
+                className="w-full h-[180px] md:h-[280px] object-cover"
+              />
+            </div>
+
             {!timerStarted && moduleKey !== '' && (
-              <div className="mb-12 p-12 bg-white rounded-3xl shadow-2xl text-center border-t-8 border-indigo-600">
-                <h2 className="text-3xl font-black mb-6 text-indigo-900">Készen álltok a küldetésre?</h2>
-                <p className="text-gray-600 mb-8 max-w-md mx-auto">
+              <div className="mb-12 p-12 bg-white rounded-3xl shadow-xl text-center border-t-8 border-indigo-600 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-50 -mr-16 -mt-16 rounded-full opacity-50" />
+                <div className="absolute bottom-0 left-0 w-24 h-24 bg-indigo-50 -ml-12 -mb-12 rounded-full opacity-50" />
+
+                <h2 className="text-3xl font-black mb-6 text-indigo-900 relative">Készen álltok a küldetésre?</h2>
+                <p className="text-gray-600 mb-8 max-w-md mx-auto relative">
                   Kattints az indításra a visszaszámlálás megkezdéséhez. Minden feladatot hiba nélkül teljesítenetek kell!
                 </p>
                 <button
                   onClick={startTimer}
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white font-black py-6 px-16 rounded-2xl text-2xl shadow-xl hover:scale-105 transition-all active:scale-95 flex items-center gap-3 mx-auto"
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white font-black py-6 px-16 rounded-2xl text-2xl shadow-xl hover:scale-105 transition-all active:scale-95 flex items-center gap-3 mx-auto relative group"
                 >
                   Játék Indítása 🚀
+                  <span className="group-hover:translate-x-1 transition-transform inline-block">→</span>
                 </button>
               </div>
             )}
