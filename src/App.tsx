@@ -224,18 +224,18 @@ export default function App() {
   return (
     <div className={`min-h-screen relative transition-colors duration-1000 ${allModulesSolved ? 'bg-green-500' : 'bg-gray-50'}`}>
       <header className="bg-white shadow">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-6">
-            <h1 className="text-xl font-bold">Bombajó Töri</h1>
+            <h1 className="text-xl font-bold whitespace-nowrap">Bombajó Töri</h1>
             {timerStarted && (
-              <div className={`px-4 py-1 rounded-full font-mono text-xl font-bold flex items-center gap-2 ${allModulesSolved ? 'bg-green-100 text-green-700 border-2 border-green-300' : 'bg-red-100 text-red-700 border-2 border-red-300 animate-pulse'}`}>
-                <span className="text-sm uppercase tracking-wider opacity-70">Idő:</span>
+              <div className={`px-4 py-1 rounded-full font-mono text-lg md:text-xl font-bold flex items-center gap-2 ${allModulesSolved ? 'bg-green-100 text-green-700 border-2 border-green-300' : 'bg-red-100 text-red-700 border-2 border-red-300 animate-pulse'}`}>
+                <span className="text-xs md:text-sm uppercase tracking-wider opacity-70">Idő:</span>
                 {formatTime(time)}
               </div>
             )}
           </div>
           {/* Module selector moved to footer */}
-          <nav className="flex gap-2">
+          <nav className="flex flex-wrap justify-center gap-2">
             <button
               onClick={() => setActive('home')}
               className={`px-3 py-2 rounded ${solved.home || allModulesSolved ? 'bg-green-100 border border-green-300' : 'hover:bg-gray-100'}`}
@@ -315,27 +315,51 @@ export default function App() {
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {hasWire && (
-                <div className={`p-4 border rounded shadow-sm transition-all ${solved.wire ? 'bg-green-100 border-green-400' : 'bg-white'}`}>
-                  {solved.wire && <span className="mr-2">✅</span>}
-                  Drótvágó modul — interaktív történelem modul.
+                <div
+                  onClick={() => setActive('wire')}
+                  className={`p-6 border rounded-xl shadow-sm transition-all cursor-pointer hover:shadow-md hover:scale-[1.02] active:scale-95 ${solved.wire ? 'bg-green-100 border-green-400' : 'bg-white border-gray-200'}`}
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl">{solved.wire ? '✅' : '⚡'}</span>
+                    <span className="font-bold text-lg">Drótvágó modul</span>
+                  </div>
+                  <p className="mt-2 text-gray-600 text-sm">Interaktív történelem modul, ahol a tudásoddal hatástalaníthatod a bombát.</p>
                 </div>
               )}
               {hasSecret && (
-                <div className={`p-4 border rounded shadow-sm transition-all ${solved.secret ? 'bg-green-100 border-green-400' : 'bg-white'}`}>
-                  {solved.secret && <span className="mr-2">✅</span>}
-                  Titkos kód — fejtsd meg az üzenetet.
+                <div
+                  onClick={() => setActive('secret')}
+                  className={`p-6 border rounded-xl shadow-sm transition-all cursor-pointer hover:shadow-md hover:scale-[1.02] active:scale-95 ${solved.secret ? 'bg-green-100 border-green-400' : 'bg-white border-gray-200'}`}
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl">{solved.secret ? '✅' : '🔒'}</span>
+                    <span className="font-bold text-lg">Titkos kód</span>
+                  </div>
+                  <p className="mt-2 text-gray-600 text-sm">Fejtsd meg az elrejtett üzenetet és találd meg a helyes kombinációt.</p>
                 </div>
               )}
               {hasWord && (
-                <div className={`p-4 border rounded shadow-sm transition-all ${solved.word ? 'bg-green-100 border-green-400' : 'bg-white'}`}>
-                  {solved.word && <span className="mr-2">✅</span>}
-                  Szóválasztó — építs szavakat oszlopokból.
+                <div
+                  onClick={() => setActive('word')}
+                  className={`p-6 border rounded-xl shadow-sm transition-all cursor-pointer hover:shadow-md hover:scale-[1.02] active:scale-95 ${solved.word ? 'bg-green-100 border-green-400' : 'bg-white border-gray-200'}`}
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl">{solved.word ? '✅' : '🔤'}</span>
+                    <span className="font-bold text-lg">Szóválasztó</span>
+                  </div>
+                  <p className="mt-2 text-gray-600 text-sm">Építs szavakat az oszlopokból és találd meg a keresett történelmi fogalmat.</p>
                 </div>
               )}
               {hasQuiz && (
-                <div className={`p-4 border rounded shadow-sm transition-all ${solved.quiz ? 'bg-green-100 border-green-400' : 'bg-white'}`}>
-                  {solved.quiz && <span className="mr-2">✅</span>}
-                  Kvíz — szabályalapú kvíz.
+                <div
+                  onClick={() => setActive('quiz')}
+                  className={`p-6 border rounded-xl shadow-sm transition-all cursor-pointer hover:shadow-md hover:scale-[1.02] active:scale-95 ${solved.quiz ? 'bg-green-100 border-green-400' : 'bg-white border-gray-200'}`}
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl">{solved.quiz ? '✅' : '❓'}</span>
+                    <span className="font-bold text-lg">Kvíz</span>
+                  </div>
+                  <p className="mt-2 text-gray-600 text-sm">Teszteld a tudásod szabályalapú kérdésekkel és válaszokkal.</p>
                 </div>
               )}
             </div>
@@ -451,48 +475,50 @@ export default function App() {
         )}
       </main>
 
-      <footer className="absolute bottom-0 left-0 right-0 bg-white border-t z-10">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <label className="text-sm text-gray-600">Modul:</label>
-            <select
-              value={moduleKey}
-              onChange={(e) => {
-                const val = e.target.value as ModuleKey;
-                setModuleKey(val);
-                const p = new URLSearchParams(window.location.search);
-                p.set('module', val);
-                const url = window.location.pathname + '?' + p.toString();
-                window.history.replaceState({}, '', url);
-                try {
-                  localStorage.removeItem('solvedModules');
-                } catch (err) {
-                  // ignore storage errors (e.g., private mode)
-                }
-                setSolved({ home: false, wire: false, secret: false, word: false, quiz: false });
-                setTime(0);
-                setTimerStarted(false);
-                setTimerRunning(false);
-                setResetCounter((prev) => prev + 1);
-              }}
-              className="border rounded px-2 py-1 mr-4"
-            >
-              <option value="">Válassz modult</option>
-              <option value="5-romai">5 római</option>
-              <option value="7-olasz">7 olasz egység</option>
-              <option value="dev">Fejlesztői mód</option>
-            </select>
+      <footer className="bg-white border-t mt-auto">
+        <div className="max-w-6xl mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
+            <div className="flex items-center gap-2">
+              <label className="text-sm text-gray-600 font-semibold whitespace-nowrap">Modul:</label>
+              <select
+                value={moduleKey}
+                onChange={(e) => {
+                  const val = e.target.value as ModuleKey;
+                  setModuleKey(val);
+                  const p = new URLSearchParams(window.location.search);
+                  p.set('module', val);
+                  const url = window.location.pathname + '?' + p.toString();
+                  window.history.replaceState({}, '', url);
+                  try {
+                    localStorage.removeItem('solvedModules');
+                  } catch (err) {
+                    // ignore storage errors (e.g., private mode)
+                  }
+                  setSolved({ home: false, wire: false, secret: false, word: false, quiz: false });
+                  setTime(0);
+                  setTimerStarted(false);
+                  setTimerRunning(false);
+                  setResetCounter((prev) => prev + 1);
+                }}
+                className="border rounded-lg px-3 py-2 bg-gray-50 text-sm focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
+              >
+                <option value="">Válassz modult</option>
+                <option value="5-romai">5 római</option>
+                <option value="7-olasz">7 olasz egység</option>
+                <option value="dev">Fejlesztői mód</option>
+              </select>
+            </div>
 
             <button
               onClick={resetGame}
-              className="bg-red-500 hover:bg-red-600 text-white text-sm font-bold py-1 px-4 rounded shadow transition-colors flex items-center gap-2"
+              className="bg-red-50 hover:bg-red-100 text-red-600 text-sm font-bold py-2 px-4 rounded-lg border border-red-200 shadow-sm transition-all flex items-center gap-2 active:scale-95 w-full sm:w-auto justify-center"
             >
               🔄 Újrakezdés
             </button>
             {loading && (
-              <div className="flex items-center">
+              <div className="flex items-center justify-center">
                 <svg
-                  className="animate-spin h-5 w-5 text-gray-600"
+                  className="animate-spin h-5 w-5 text-indigo-600"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -511,18 +537,16 @@ export default function App() {
             )}
           </div>
 
-          <div className="text-sm text-gray-500">
-            <div>
-              TöviscsapatX{' '}
-              <a
-                className="text-blue-600 hover:underline"
-                href="https://toviscsapat.hu"
-                target="_blank"
-                rel="noreferrer"
-              >
-                https://toviscsapat.hu
-              </a>
-            </div>
+          <div className="text-sm text-gray-500 text-center md:text-right">
+            <div className="font-semibold text-gray-700">TöviscsapatX</div>
+            <a
+              className="text-indigo-600 hover:text-indigo-800 transition-colors font-medium underline underline-offset-4"
+              href="https://toviscsapat.hu"
+              target="_blank"
+              rel="noreferrer"
+            >
+              toviscsapat.hu
+            </a>
           </div>
         </div>
       </footer>
