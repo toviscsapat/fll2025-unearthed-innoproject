@@ -656,7 +656,10 @@ export default function App() {
         {active === 'diszlexia' && (
           <div className="bg-white rounded-3xl shadow-xl p-8 border-t-8 border-indigo-600 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <h2 className="text-3xl font-black mb-6 text-indigo-900">Diszlexiás kártya</h2>
-            <p className="text-gray-600 mb-8">Ezen az oldalon megtekintheted és letöltheted a diszlexia-barát kártyát.</p>
+            <p className="text-gray-600 mb-4">Ezen az oldalon megtekintheted és letöltheted a diszlexia-barát kártyát.</p>
+            <div className="mb-8 p-4 bg-orange-50 border-l-4 border-orange-400 text-orange-800 rounded-r-xl text-sm font-medium">
+              💡 <strong>Tipp:</strong> A jobb eredmény érdekében újrahasznosított papírra nyomtatandó!
+            </div>
             {moduleKey === '5-romai' ? (
               <>
                 <div className="aspect-[1/1.414] w-full max-w-4xl mx-auto border-2 border-gray-200 rounded-3xl overflow-hidden shadow-inner bg-gray-50 flex items-center justify-center">
