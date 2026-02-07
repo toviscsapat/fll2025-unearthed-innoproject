@@ -19,7 +19,7 @@ import WordSelector, {
 
 // configs will be loaded dynamically depending on selected module
 
-type ComponentKey = 'home' | 'wire' | 'secret' | 'word' | 'quiz';
+type ComponentKey = 'home' | 'wire' | 'secret' | 'word' | 'quiz' | 'kartyak' | 'audio' | 'diszlexia';
 type ModuleKey = '' | '5-romai' | '7-olasz' | 'dev';
 
 export default function App() {
@@ -27,6 +27,7 @@ export default function App() {
   const params = new URLSearchParams(window.location.search);
   const initialModule = params.get('module') ?? '';
   const [moduleKey, setModuleKey] = useState<ModuleKey>(initialModule as ModuleKey);
+  const [showDownloads, setShowDownloads] = useState(false);
   // runtime-loaded configs
   const [quizConfig, setQuizConfig] = useState<
     QuizConfig | undefined
@@ -111,6 +112,9 @@ export default function App() {
     secret: false,
     word: false,
     quiz: false,
+    kartyak: false,
+    audio: false,
+    diszlexia: false,
   });
 
   useEffect(() => {
@@ -208,7 +212,7 @@ export default function App() {
   const resetGame = () => {
     if (!window.confirm('Biztosan újra akarod kezdeni a teljes játékot? Minden haladás elvész.')) return;
 
-    setSolved({ home: false, wire: false, secret: false, word: false, quiz: false });
+    setSolved({ home: false, wire: false, secret: false, word: false, quiz: false, kartyak: false, audio: false, diszlexia: false });
     setTime(0);
     setTimerStarted(false);
     setTimerRunning(false);
@@ -232,7 +236,7 @@ export default function App() {
     } catch (err) {
       // ignore storage errors (e.g., private mode)
     }
-    setSolved({ home: false, wire: false, secret: false, word: false, quiz: false });
+    setSolved({ home: false, wire: false, secret: false, word: false, quiz: false, kartyak: false, audio: false, diszlexia: false });
     setTime(0);
     setTimerStarted(false);
     setTimerRunning(false);
@@ -356,6 +360,43 @@ export default function App() {
               >
                 Kvíz
               </button>
+            )}
+            {(moduleKey === '5-romai' || moduleKey === '7-olasz') && (
+              <div
+                className="relative group"
+                onMouseEnter={() => setShowDownloads(true)}
+                onMouseLeave={() => setShowDownloads(false)}
+              >
+                <button
+                  className={`px-3 py-2 rounded flex items-center gap-1 ${(active === 'kartyak' || active === 'audio') ? 'bg-indigo-100 border border-indigo-300' : 'hover:bg-gray-100'}`}
+                >
+                  Letöltések <span className="text-[10px]">▼</span>
+                </button>
+                <div
+                  className={`absolute right-0 top-full pt-2 z-50 transition-all origin-top-right ${showDownloads ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}
+                >
+                  <div className="bg-white shadow-xl border border-gray-100 rounded-xl py-2 min-w-[200px]">
+                    <button
+                      onClick={() => { setActive('kartyak'); setShowDownloads(false); }}
+                      className="w-full text-left px-4 py-2 hover:bg-gray-50 text-sm font-medium flex items-center gap-2"
+                    >
+                      📥 Kártyák letöltése
+                    </button>
+                    <button
+                      onClick={() => { setActive('audio'); setShowDownloads(false); }}
+                      className="w-full text-left px-4 py-2 hover:bg-gray-50 text-sm font-medium flex items-center gap-2"
+                    >
+                      🔊 Kártyák felolvasása
+                    </button>
+                    <button
+                      onClick={() => { setActive('diszlexia'); setShowDownloads(false); }}
+                      className="w-full text-left px-4 py-2 hover:bg-gray-50 text-sm font-medium flex items-center gap-2"
+                    >
+                      👓 Diszlexiás kártya
+                    </button>
+                  </div>
+                </div>
+              </div>
             )}
           </nav>
         </div>
@@ -528,12 +569,12 @@ export default function App() {
                 config={
                   moduleKey === 'dev'
                     ? {
-                        title: 'Dev WordSelector',
-                        number_of_selectable_letters: 1,
-                        correct_letters: ['A'],
-                        possible_letters: [['A', 'B']],
-                        question_descriptions: [['Dev mode']],
-                      }
+                      title: 'Dev WordSelector',
+                      number_of_selectable_letters: 1,
+                      correct_letters: ['A'],
+                      possible_letters: [['A', 'B']],
+                      question_descriptions: [['Dev mode']],
+                    }
                     : wordSelectorConfig!
                 }
                 onSolved={() => markSolved('word')}
@@ -553,10 +594,10 @@ export default function App() {
                 config={
                   moduleKey === 'dev'
                     ? {
-                        answers: [{ id: 1, text: 'Dev' }],
-                        numberOptions: [1, 2, 3],
-                        solution: { option: 1, answer: 1 },
-                      }
+                      answers: [{ id: 1, text: 'Dev' }],
+                      numberOptions: [1, 2, 3],
+                      solution: { option: 1, answer: 1 },
+                    }
                     : quizConfig!
                 }
                 onSolved={() => markSolved('quiz')}
@@ -565,6 +606,81 @@ export default function App() {
             ) : (
               <div className="p-4 bg-yellow-50 rounded">
                 A kvíz nem érhető el ebben a konfigurációban.
+              </div>
+            )}
+          </div>
+        )}
+        {active === 'kartyak' && (
+          <div className="bg-white rounded-3xl shadow-xl p-8 border-t-8 border-indigo-600 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <h2 className="text-3xl font-black mb-6 text-indigo-900">Kártyák kiválasztása</h2>
+            <p className="text-gray-600 mb-8">Ezen az oldalon megtekintheted és letöltheted a modulhoz tartozó kártyákat.</p>
+            <div className="aspect-[1/1.414] w-full max-w-4xl mx-auto border-2 border-gray-200 rounded-3xl overflow-hidden shadow-inner bg-gray-50 flex items-center justify-center">
+              <iframe
+                src={`/assets/${moduleKey}/kartyak.pdf`}
+                className="w-full h-full min-h-[600px]"
+                title="Kártyák"
+              />
+            </div>
+            <div className="mt-8 text-center">
+              <a
+                href={`/assets/${moduleKey}/kartyak.pdf`}
+                download="kartyak.pdf"
+                className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-10 rounded-2xl shadow-xl transition-all hover:scale-105 active:scale-95 inline-flex items-center gap-2"
+              >
+                <span>📥 Letöltés PDF formátumban</span>
+              </a>
+            </div>
+          </div>
+        )}
+        {active === 'audio' && (
+          <div className="bg-white rounded-3xl shadow-xl p-8 border-t-8 border-indigo-600 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <h2 className="text-3xl font-black mb-6 text-indigo-900">Kártyák felolvasása</h2>
+            <p className="text-gray-600 mb-8">Hallgasd meg a modulhoz tartozó kártyák tartalmát hangfelvételen.</p>
+            <div className="flex flex-col items-center justify-center p-12 bg-indigo-50 rounded-3xl border-4 border-white shadow-inner">
+              <div className="w-24 h-24 bg-indigo-100 rounded-full flex items-center justify-center mb-6 animate-pulse">
+                <span className="text-4xl text-indigo-600">🔊</span>
+              </div>
+              <audio
+                controls
+                src={`/assets/${moduleKey === '5-romai' ? '5-romai/kartya-1-audio.m4a' : '7-olasz/kartyak_hang.m4a'}`}
+                className="w-full max-w-md"
+              >
+                Sajnos a böngésződ nem támogatja a közvetlen lejátszást.
+              </audio>
+              <div className="mt-8 text-sm text-indigo-400 font-medium">
+                {moduleKey === '5-romai' ? 'kartya-1-audio.m4a' : 'Hamarosan elérhető az olasz modulhoz is.'}
+              </div>
+            </div>
+          </div>
+        )}
+        {active === 'diszlexia' && (
+          <div className="bg-white rounded-3xl shadow-xl p-8 border-t-8 border-indigo-600 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <h2 className="text-3xl font-black mb-6 text-indigo-900">Diszlexiás kártya</h2>
+            <p className="text-gray-600 mb-8">Ezen az oldalon megtekintheted és letöltheted a diszlexia-barát kártyát.</p>
+            {moduleKey === '5-romai' ? (
+              <>
+                <div className="aspect-[1/1.414] w-full max-w-4xl mx-auto border-2 border-gray-200 rounded-3xl overflow-hidden shadow-inner bg-gray-50 flex items-center justify-center">
+                  <iframe
+                    src={`/assets/${moduleKey}/kartya-1-diszlexia.pdf`}
+                    className="w-full h-full min-h-[600px]"
+                    title="Diszlexiás Kártya"
+                  />
+                </div>
+                <div className="mt-8 text-center border-t pt-8">
+                  <a
+                    href={`/assets/${moduleKey}/kartya-1-diszlexia.pdf`}
+                    download="kartya-1-diszlexia.pdf"
+                    className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-10 rounded-2xl shadow-xl transition-all hover:scale-105 active:scale-95 inline-flex items-center gap-2"
+                  >
+                    <span>📥 Letöltés (Diszlexia-barát)</span>
+                  </a>
+                </div>
+              </>
+            ) : (
+              <div className="p-12 bg-indigo-50 rounded-3xl text-center">
+                <div className="text-5xl mb-4">⏳</div>
+                <h3 className="text-xl font-bold text-indigo-900 mb-2">Hamarosan elérhető</h3>
+                <p className="text-indigo-600">Ez a verzió még nem készült el ehhez a modulhoz.</p>
               </div>
             )}
           </div>
